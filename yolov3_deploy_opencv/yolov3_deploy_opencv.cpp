@@ -106,9 +106,9 @@ void postprocess(Mat& frame, const vector<Mat>& outs, float confThreshold, float
 
 int main()
 {
-	string names_file = "E:/1.Academic/1.projects/2020/3.pig/3doc/voc.names";
-	String model_def = "E:/1.Academic/1.projects/2020/3.pig/3doc/yolov3-voc.cfg";
-	String weights = "E:/1.Academic/1.projects/2020/3.pig/3doc/yolov3-voc_final.weights";
+	string names_file = "E:/1.Academic/1.projects/2020/4.激光雷达/yolov3/yolov3/coco.names";
+	String model_def = "E:/1.Academic/1.projects/2020/4.激光雷达/yolov3/yolov3/yolov3.cfg";
+	String weights = "E:/1.Academic/1.projects/2020/4.激光雷达/yolov3/yolov3/yolov3.weights";
 
 	int in_w, in_h;
 	double thresh = 0.5;
@@ -129,14 +129,15 @@ int main()
 	net.setPreferableTarget(DNN_TARGET_CPU);
 
 	//read image and forward
-	//VideoCapture capture(2);// VideoCapture:OENCV中新增的类，捕获视频并显示出来
-	//while (1)
-	//{
+	VideoCapture capture;// VideoCapture:OENCV中新增的类，捕获视频并显示出来
+	capture.open("E:\\1.Academic\\1.projects\\2020\\5.person_car_detect\\2.avi");
+	while (1)
+	{
 		Mat frame, blob;
-		//capture >> frame;
-		frame = imread("E:/1.Academic/1.projects/2020/3.pig/3doc/1041.jpg");
+		capture >> frame;
+		//frame = imread("E:/1.Academic/1.projects/2020/3.pig/3doc/1041.jpg");
 
-		blobFromImage(frame, blob, 1 / 255.0, Size(in_w, in_h), Scalar(), true, false);
+		blobFromImage(frame, blob, 1 / 255.0, Size(in_w, in_h), Scalar(), true, false);//灰度值归一化到0-1；交换B&G通道变为RGB
 
 		vector<Mat> mat_blob;
 		imagesFromBlob(blob, mat_blob);
@@ -158,8 +159,8 @@ int main()
 
 		imshow("res", frame);
 
-		waitKey(0);
-	
+		waitKey(30);
+	}
 	return 0;
 }
 
